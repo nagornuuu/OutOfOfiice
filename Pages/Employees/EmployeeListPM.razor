@@ -1,0 +1,207 @@
+﻿@page "/employees/pm"
+@using OutOfOffice.Models
+@using OutOfOffice.Services
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@inject EmployeeService EmployeeService
+@inject ProjectService ProjectService
+@inject UserManager<IdentityUser> UserManager
+@inject NavigationManager Navigation
+@inject ILogger<EmployeeListPM> Logger
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Employees (Project Manager)</h3>
+
+<button class="btn btn-secondary mb-3" @onclick="NavigateBackToDashboard">Back to Dashboard</button>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Search by name..." @oninput="SearchEmployees" />
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th @onclick='() => SortTable("ID")'>ID</th>
+                <th @onclick='() => SortTable("FullName")'>Full Name</th>
+                <th @onclick='() => SortTable("Subdivision")'>Subdivision</th>
+                <th @onclick='() => SortTable("Position")'>Position</th>
+                <th @onclick='() => SortTable("Status")'>Status</th>
+                <th @onclick='() => SortTable("OutOfOfficeBalance")'>Out of Office Balance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in filteredEmployees)
+            {
+                <tr>
+                    <td>@employee.ID</td>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Subdivision</td>
+                    <td>@employee.Position</td>
+                    <td>@employee.Status</td>
+                    <td>@employee.OutOfOfficeBalance</td>
+                    <td>
+                        <button class="btn btn-info" @onclick="() => ViewEmployee(employee.ID)">View</button>
+                        <button class="btn btn-success" @onclick="() => ShowAssignProjectModal(employee.ID)">Assign to Project</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (showAssignProjectModal)
+{
+    <div class="modal show" tabindex="-1" style="display:block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assign Project</h5>
+                    <button type="button" class="btn-close" @onclick="CloseAssignProjectModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="assignment" OnValidSubmit="AssignProject">
+                        <DataAnnotationsValidator />
+                        <div class="form-group">
+                            <label for="Project">Project</label>
+                            <InputSelect id="Project" class="form-control" @bind-Value="assignment.ProjectId">
+                                @foreach (var project in projects)
+                                {
+                                    <option value="@project.ID">@project.ProjectType</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => assignment.ProjectId)" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Assign</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Employee> employees;
+    private List<Employee> filteredEmployees;
+    private List<Project> projects;
+    private string searchQuery = string.Empty;
+    private string sortColumn = "ID";
+    private bool sortAscending = true;
+    private bool showAssignProjectModal = false;
+    private int selectedEmployeeId;
+    private EmployeeProject assignment = new EmployeeProject();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadEmployeesAsync();
+            projects = await ProjectService.GetProjectsAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading employees or projects");
+        }
+    }
+
+    private async Task LoadEmployeesAsync()
+    {
+        employees = await EmployeeService.GetEmployeesAsync();
+        FilterAndSortEmployees();
+    }
+
+    private void FilterAndSortEmployees()
+    {
+        filteredEmployees = employees
+            .Where(e => string.IsNullOrEmpty(searchQuery) || e.FullName.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        SortEmployees();
+    }
+
+    private void SortEmployees()
+    {
+        switch (sortColumn)
+        {
+            case "ID":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.ID).ToList() : filteredEmployees.OrderByDescending(e => e.ID).ToList();
+                break;
+            case "FullName":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.FullName).ToList() : filteredEmployees.OrderByDescending(e => e.FullName).ToList();
+                break;
+            case "Subdivision":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.Subdivision).ToList() : filteredEmployees.OrderByDescending(e => e.Subdivision).ToList();
+                break;
+            case "Position":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.Position).ToList() : filteredEmployees.OrderByDescending(e => e.Position).ToList();
+                break;
+            case "Status":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.Status).ToList() : filteredEmployees.OrderByDescending(e => e.Status).ToList();
+                break;
+            case "OutOfOfficeBalance":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.OutOfOfficeBalance).ToList() : filteredEmployees.OrderByDescending(e => e.OutOfOfficeBalance).ToList();
+                break;
+        }
+    }
+
+    private void SortTable(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        SortEmployees();
+    }
+
+    private void SearchEmployees(ChangeEventArgs e)
+    {
+        searchQuery = e.Value?.ToString();
+        FilterAndSortEmployees();
+    }
+
+    private void ViewEmployee(int id)
+    {
+        Navigation.NavigateTo($"/employees/pm/details/{id}");
+    }
+
+    private void ShowAssignProjectModal(int employeeId)
+    {
+        selectedEmployeeId = employeeId;
+        assignment.EmployeeId = employeeId;
+        showAssignProjectModal = true;
+    }
+
+    private void CloseAssignProjectModal()
+    {
+        showAssignProjectModal = false;
+    }
+
+    private async Task AssignProject()
+    {
+        try
+        {
+            await EmployeeService.AssignEmployeeToProject(assignment);
+            CloseAssignProjectModal();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error assigning project");
+        }
+    }
+
+    private void NavigateBackToDashboard()
+    {
+        Navigation.NavigateTo("/project-dashboard");
+    }
+}

@@ -1,0 +1,136 @@
+﻿@page "/leaverequests/pm"
+@using OutOfOffice.Models
+@using OutOfOffice.Services
+@inject LeaveRequestService LeaveRequestService
+@inject ILogger<LeaveRequestListPM> Logger
+@inject NavigationManager Navigation
+
+<h3>Leave Requests</h3>
+
+<button class="btn btn-secondary mb-3" @onclick="NavigateBackToPMDashboard">Back to PM Dashboard</button>
+
+@if (leaveRequests == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Search by request number..." @oninput="SearchLeaveRequests" />
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th @onclick='() => SortTable("ID")'>ID</th>
+                <th @onclick='() => SortTable("AbsenceReason")'>Absence Reason</th>
+                <th @onclick='() => SortTable("StartDate")'>Start Date</th>
+                <th @onclick='() => SortTable("EndDate")'>End Date</th>
+                <th @onclick='() => SortTable("Status")'>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var leaveRequest in filteredLeaveRequests)
+            {
+                <tr>
+                    <td>@leaveRequest.ID</td>
+                    <td>@leaveRequest.AbsenceReason</td>
+                    <td>@leaveRequest.StartDate.ToShortDateString()</td>
+                    <td>@leaveRequest.EndDate.ToShortDateString()</td>
+                    <td>@leaveRequest.Status</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => OpenLeaveRequest(leaveRequest.ID)">Details</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<LeaveRequest> leaveRequests;
+    private List<LeaveRequest> filteredLeaveRequests;
+    private string searchQuery = string.Empty;
+    private string sortColumn = "ID";
+    private bool sortAscending = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadLeaveRequestsAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading leave requests");
+        }
+    }
+
+    private async Task LoadLeaveRequestsAsync()
+    {
+        leaveRequests = await LeaveRequestService.GetLeaveRequestsAsync();
+        FilterAndSortLeaveRequests();
+    }
+
+    private void FilterAndSortLeaveRequests()
+    {
+        filteredLeaveRequests = leaveRequests
+            .Where(lr => string.IsNullOrEmpty(searchQuery) || lr.ID.ToString().Contains(searchQuery))
+            .ToList();
+
+        SortLeaveRequests();
+    }
+
+    private void SortLeaveRequests()
+    {
+        switch (sortColumn)
+        {
+            case "ID":
+                filteredLeaveRequests = sortAscending ? filteredLeaveRequests.OrderBy(lr => lr.ID).ToList() : filteredLeaveRequests.OrderByDescending(lr => lr.ID).ToList();
+                break;
+            case "AbsenceReason":
+                filteredLeaveRequests = sortAscending ? filteredLeaveRequests.OrderBy(lr => lr.AbsenceReason).ToList() : filteredLeaveRequests.OrderByDescending(lr => lr.AbsenceReason).ToList();
+                break;
+            case "StartDate":
+                filteredLeaveRequests = sortAscending ? filteredLeaveRequests.OrderBy(lr => lr.StartDate).ToList() : filteredLeaveRequests.OrderByDescending(lr => lr.StartDate).ToList();
+                break;
+            case "EndDate":
+                filteredLeaveRequests = sortAscending ? filteredLeaveRequests.OrderBy(lr => lr.EndDate).ToList() : filteredLeaveRequests.OrderByDescending(lr => lr.EndDate).ToList();
+                break;
+            case "Status":
+                filteredLeaveRequests = sortAscending ? filteredLeaveRequests.OrderBy(lr => lr.Status).ToList() : filteredLeaveRequests.OrderByDescending(lr => lr.Status).ToList();
+                break;
+        }
+    }
+
+    private void SortTable(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        SortLeaveRequests();
+    }
+
+    private void SearchLeaveRequests(ChangeEventArgs e)
+    {
+        searchQuery = e.Value?.ToString();
+        FilterAndSortLeaveRequests();
+    }
+
+    private void OpenLeaveRequest(int id)
+    {
+        Navigation.NavigateTo($"/leaverequests/pm/details/{id}");
+    }
+
+    private void NavigateBackToPMDashboard()
+    {
+        Navigation.NavigateTo("/project-dashboard");
+    }
+}

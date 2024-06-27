@@ -1,0 +1,93 @@
+﻿@page "/leaverequests/create/employee"
+@page "/leaverequests/edit/employee/{id:int}"
+@using Microsoft.AspNetCore.Components.Forms
+@using OutOfOffice.Models
+@using OutOfOffice.Services
+@inject LeaveRequestService LeaveRequestService
+@inject NavigationManager Navigation
+
+<h3>@(isNewRequest ? "Create Leave Request" : "Edit Leave Request")</h3>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<EditForm Model="@leaveRequest" OnValidSubmit="SaveLeaveRequest">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="AbsenceReason">Absence Reason</label>
+        <InputText id="AbsenceReason" class="form-control" @bind-Value="leaveRequest.AbsenceReason" />
+        <ValidationMessage For="@(() => leaveRequest.AbsenceReason)" />
+    </div>
+    <div class="form-group">
+        <label for="StartDate">Start Date</label>
+        <InputDate id="StartDate" class="form-control" @bind-Value="leaveRequest.StartDate" />
+        <ValidationMessage For="@(() => leaveRequest.StartDate)" />
+    </div>
+    <div class="form-group">
+        <label for="EndDate">End Date</label>
+        <InputDate id="EndDate" class="form-control" @bind-Value="leaveRequest.EndDate" />
+        <ValidationMessage For="@(() => leaveRequest.EndDate)" />
+    </div>
+    <div class="form-group">
+        <label for="Comment">Comment</label>
+        <InputTextArea id="Comment" class="form-control" @bind-Value="leaveRequest.Comment" />
+        <ValidationMessage For="@(() => leaveRequest.Comment)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <NavLink href="/leaverequests/employee" class="btn btn-secondary">Back to List</NavLink>
+</EditForm>
+
+@code {
+    [Parameter] public int? id { get; set; }
+    private LeaveRequest leaveRequest = new LeaveRequest();
+    private string errorMessage;
+    private bool isNewRequest = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (id.HasValue)
+        {
+            isNewRequest = false;
+            await LoadLeaveRequest();
+        }
+    }
+
+    private async Task LoadLeaveRequest()
+    {
+        try
+        {
+            leaveRequest = await LeaveRequestService.GetLeaveRequestAsync(id.Value);
+            if (leaveRequest == null)
+            {
+                errorMessage = "Leave request not found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading data: {ex.Message}";
+        }
+    }
+
+    private async Task SaveLeaveRequest()
+    {
+        try
+        {
+            if (isNewRequest)
+            {
+                await LeaveRequestService.AddLeaveRequestAsync(leaveRequest);
+            }
+            else
+            {
+                await LeaveRequestService.UpdateLeaveRequestAsync(leaveRequest);
+            }
+            Navigation.NavigateTo("/leaverequests/employee");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error saving data: {ex.Message}";
+        }
+    }
+}

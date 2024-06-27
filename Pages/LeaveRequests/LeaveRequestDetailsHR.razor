@@ -1,0 +1,79 @@
+﻿@page "/leaverequests/hr/details/{id:int}"
+@using OutOfOffice.Models
+@using OutOfOffice.Services
+@inject LeaveRequestService LeaveRequestService
+@inject NavigationManager Navigation
+
+<h3>Leave Request Details</h3>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+@if (leaveRequest == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <form>
+        <div class="form-group">
+            <label for="AbsenceReason">Absence Reason</label>
+            <input type="text" id="AbsenceReason" class="form-control" value="@leaveRequest.AbsenceReason" disabled />
+        </div>
+        <div class="form-group">
+            <label for="StartDate">Start Date</label>
+            <input type="text" id="StartDate" class="form-control" value="@leaveRequest.StartDate.ToShortDateString()" disabled />
+        </div>
+        <div class="form-group">
+            <label for="EndDate">End Date</label>
+            <input type="text" id="EndDate" class="form-control" value="@leaveRequest.EndDate.ToShortDateString()" disabled />
+        </div>
+        <div class="form-group">
+            <label for="Status">Status</label>
+            <input type="text" id="Status" class="form-control" value="@leaveRequest.Status" disabled />
+        </div>
+        <div class="form-group">
+            <label for="Employee">Employee</label>
+            <input type="text" id="Employee" class="form-control" value="@leaveRequest.Employee?.FullName" disabled />
+        </div>
+        <div class="form-group">
+            <label for="Comment">Comment</label>
+            <textarea id="Comment" class="form-control" @bind="leaveRequest.Comment" disabled></textarea>
+        </div>
+        <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Back to List</button>
+    </form>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    private LeaveRequest leaveRequest;
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        try
+        {
+            leaveRequest = await LeaveRequestService.GetLeaveRequestAsync(id);
+            if (leaveRequest == null)
+            {
+                errorMessage = "Leave request not found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading data: {ex.Message}";
+        }
+    }
+
+    private void NavigateBack()
+    {
+        Navigation.NavigateTo("/leaverequests/hr");
+    }
+}

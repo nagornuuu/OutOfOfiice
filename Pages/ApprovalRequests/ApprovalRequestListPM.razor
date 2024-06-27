@@ -1,0 +1,161 @@
+﻿@page "/approvalrequests/pm"
+@using OutOfOffice.Models
+@using OutOfOffice.Services
+@inject ApprovalRequestService ApprovalRequestService
+@inject ILogger<ApprovalRequestListPM> Logger
+@inject NavigationManager Navigation
+
+<h3>Approval Requests</h3>
+
+@if (approvalRequests == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Search by request number..." @oninput="SearchApprovalRequests" />
+    </div>
+    <button class="btn btn-primary mb-3" @onclick="NavigateBackToPMDashboard">Back to PM Dashboard</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th @onclick='() => SortTable("ID")'>ID</th>
+                <th @onclick='() => SortTable("Approver.FullName")'>Approver</th>
+                <th @onclick='() => SortTable("Status")'>Status</th>
+                <th @onclick='() => SortTable("Comment")'>Comment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var approvalRequest in filteredApprovalRequests)
+            {
+                <tr>
+                    <td>@approvalRequest.ID</td>
+                    <td>@approvalRequest.Approver?.FullName</td>
+                    <td>@approvalRequest.Status</td>
+                    <td>@approvalRequest.Comment</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => OpenApprovalRequest(approvalRequest.ID)">Details</button>
+                        <button class="btn btn-success" @onclick="() => ApproveRequest(approvalRequest.ID)">Approve</button>
+                        <button class="btn btn-danger" @onclick="() => RejectRequest(approvalRequest.ID)">Reject</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ApprovalRequest> approvalRequests;
+    private List<ApprovalRequest> filteredApprovalRequests;
+    private string searchQuery = string.Empty;
+    private string sortColumn = "ID";
+    private bool sortAscending = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadApprovalRequestsAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading approval requests");
+        }
+    }
+
+    private async Task LoadApprovalRequestsAsync()
+    {
+        approvalRequests = await ApprovalRequestService.GetApprovalRequestsAsync();
+        FilterAndSortApprovalRequests();
+    }
+
+    private void FilterAndSortApprovalRequests()
+    {
+        filteredApprovalRequests = approvalRequests
+            .Where(ar => string.IsNullOrEmpty(searchQuery) || ar.ID.ToString().Contains(searchQuery))
+            .ToList();
+
+        SortApprovalRequests();
+    }
+
+    private void SortApprovalRequests()
+    {
+        switch (sortColumn)
+        {
+            case "ID":
+                filteredApprovalRequests = sortAscending ? filteredApprovalRequests.OrderBy(ar => ar.ID).ToList() : filteredApprovalRequests.OrderByDescending(ar => ar.ID).ToList();
+                break;
+            case "Approver.FullName":
+                filteredApprovalRequests = sortAscending ? filteredApprovalRequests.OrderBy(ar => ar.Approver.FullName).ToList() : filteredApprovalRequests.OrderByDescending(ar => ar.Approver.FullName).ToList();
+                break;
+            case "Status":
+                filteredApprovalRequests = sortAscending ? filteredApprovalRequests.OrderBy(ar => ar.Status).ToList() : filteredApprovalRequests.OrderByDescending(ar => ar.Status).ToList();
+                break;
+            case "Comment":
+                filteredApprovalRequests = sortAscending ? filteredApprovalRequests.OrderBy(ar => ar.Comment).ToList() : filteredApprovalRequests.OrderByDescending(ar => ar.Comment).ToList();
+                break;
+            default:
+                throw new InvalidOperationException("Invalid column for sorting");
+        }
+    }
+
+    private void SortTable(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        SortApprovalRequests();
+    }
+
+    private void SearchApprovalRequests(ChangeEventArgs e)
+    {
+        searchQuery = e.Value?.ToString();
+        FilterAndSortApprovalRequests();
+    }
+
+    private void OpenApprovalRequest(int id)
+    {
+        Navigation.NavigateTo($"/approvalrequests/pm/details/{id}");
+    }
+
+    private async Task ApproveRequest(int id)
+    {
+        try
+        {
+            await ApprovalRequestService.ApproveRequestAsync(id);
+            await LoadApprovalRequestsAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, $"Error approving request: {ex.Message}");
+        }
+    }
+
+    private async Task RejectRequest(int id)
+    {
+        var comment = "Rejection reason goes here"; // Customize the comment as needed.
+        try
+        {
+            await ApprovalRequestService.RejectRequestAsync(id, comment);
+            await LoadApprovalRequestsAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, $"Error rejecting request: {ex.Message}");
+        }
+    }
+
+    private void NavigateBackToPMDashboard()
+    {
+        Navigation.NavigateTo("/project-dashboard");
+    }
+}

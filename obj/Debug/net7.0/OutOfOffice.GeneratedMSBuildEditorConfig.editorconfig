@@ -1,0 +1,169 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = OutOfOffice
+build_property.RootNamespace = OutOfOffice
+build_property.ProjectDir = C:\Users\andrii\Documents\project\outOfOfficeSolution\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\andrii\Documents\project\outOfOfficeSolution
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/ApprovalRequests/ApprovalRequestDetailsHR.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwcm92YWxSZXF1ZXN0c1xBcHByb3ZhbFJlcXVlc3REZXRhaWxzSFIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/ApprovalRequests/ApprovalRequestDetailsPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwcm92YWxSZXF1ZXN0c1xBcHByb3ZhbFJlcXVlc3REZXRhaWxzUE0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/ApprovalRequests/ApprovalRequestListHR.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwcm92YWxSZXF1ZXN0c1xBcHByb3ZhbFJlcXVlc3RMaXN0SFIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/ApprovalRequests/ApprovalRequestListPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwcm92YWxSZXF1ZXN0c1xBcHByb3ZhbFJlcXVlc3RMaXN0UE0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/ApprovalRequests/CreateApprovalRequest.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwcm92YWxSZXF1ZXN0c1xDcmVhdGVBcHByb3ZhbFJlcXVlc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/ApprovalRequests/EditApprovalRequest.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwcm92YWxSZXF1ZXN0c1xFZGl0QXBwcm92YWxSZXF1ZXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/dashboards/EmployeeDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcZGFzaGJvYXJkc1xFbXBsb3llZURhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/dashboards/HrDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcZGFzaGJvYXJkc1xIckRhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/dashboards/ProjectManagerDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcZGFzaGJvYXJkc1xQcm9qZWN0TWFuYWdlckRhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Employees/CreateEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVzXENyZWF0ZUVtcGxveWVlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Employees/EditEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVzXEVkaXRFbXBsb3llZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Employees/EmployeeDetailsHR.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVzXEVtcGxveWVlRGV0YWlsc0hSLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Employees/EmployeeDetailsPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVzXEVtcGxveWVlRGV0YWlsc1BNLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Employees/EmployeeListHr.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVzXEVtcGxveWVlTGlzdEhyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Employees/EmployeeListPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVzXEVtcGxveWVlTGlzdFBNLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaveRequestDetailsEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZVJlcXVlc3REZXRhaWxzRW1wbG95ZWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaveRequestDetailsHR.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZVJlcXVlc3REZXRhaWxzSFIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaveRequestDetailsPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZVJlcXVlc3REZXRhaWxzUE0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaveRequestFormEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZVJlcXVlc3RGb3JtRW1wbG95ZWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaveRequestListEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZVJlcXVlc3RMaXN0RW1wbG95ZWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaveRequestListHR.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZVJlcXVlc3RMaXN0SFIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaveRequestListPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZVJlcXVlc3RMaXN0UE0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaverequestsCancel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZXJlcXVlc3RzQ2FuY2VsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/LeaveRequests/LeaverequestsSubmit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGVhdmVSZXF1ZXN0c1xMZWF2ZXJlcXVlc3RzU3VibWl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/CreateProject.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcQ3JlYXRlUHJvamVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/EditProject.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcRWRpdFByb2plY3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/ProjectDetailEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcUHJvamVjdERldGFpbEVtcGxveWVlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/ProjectDetailsHR.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcUHJvamVjdERldGFpbHNIUi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/ProjectDetailsPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcUHJvamVjdERldGFpbHNQTS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/ProjectListEmployee.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcUHJvamVjdExpc3RFbXBsb3llZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/ProjectListHR.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcUHJvamVjdExpc3RIUi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/Projects/ProjectListPM.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHNcUHJvamVjdExpc3RQTS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-vdg1x7htni
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-d36q0og85v
+
+[C:/Users/andrii/Documents/project/outOfOfficeSolution/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

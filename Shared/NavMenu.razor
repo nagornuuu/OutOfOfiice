@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="sidebar">
+    <nav class="nav flex-column">
+        @if (isHRManager)
+        {
+            <NavLink href="/hr-dashboard" class="nav-link">HR Dashboard</NavLink>
+            <NavLink href="/employees/hr" class="nav-link">Employees (HR)</NavLink>
+        }
+        @if (isProjectManager)
+        {
+            <NavLink href="/project-dashboard" class="nav-link">Project Manager Dashboard</NavLink>
+            <NavLink href="/employees/pm" class="nav-link">Employees (PM)</NavLink>
+        }
+        @if (isEmployee)
+        {
+            <NavLink href="/employee-dashboard" class="nav-link">Employee Dashboard</NavLink>
+
+        }
+        <NavLink href="/login" class="nav-link">Login</NavLink>
+    </nav>
+</div>
+
+@code {
+    private bool isHRManager;
+    private bool isProjectManager;
+    private bool isEmployee;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            var identityUser = await UserManager.GetUserAsync(user);
+            isHRManager = await UserManager.IsInRoleAsync(identityUser, "HRManager");
+            isProjectManager = await UserManager.IsInRoleAsync(identityUser, "ProjectManager");
+            isEmployee = await UserManager.IsInRoleAsync(identityUser, "Employee");
+        }
+    }
+}

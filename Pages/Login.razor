@@ -1,0 +1,81 @@
+﻿@page "/login"
+@inject NavigationManager Navigation
+
+<div class="login-container">
+    <div class="login-box">
+        <h3>Login</h3>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger">@errorMessage</div>
+        }
+
+        <EditForm Model="@loginModel" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="email">Email</label>
+                <InputText id="email" class="form-control" @bind-Value="loginModel.Email" placeholder="Enter your email" />
+                <ValidationMessage For="@(() => loginModel.Email)" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" placeholder="Enter your password" />
+                <ValidationMessage For="@(() => loginModel.Password)" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string errorMessage;
+
+    private static readonly List<User> users = new List<User>
+    {
+        new User { Email = "hrmanager@gmail.com", Password = "Password123!", Role = "HRManager" },
+        new User { Email = "projectmanager@gmail.com", Password = "Password123!", Role = "ProjectManager" },
+        new User { Email = "employee1@gmail.com", Password = "Password123!", Role = "Employee" },
+        new User { Email = "employee2@gmail.com", Password = "Password123!", Role = "Employee" }
+    };
+
+    private async Task HandleValidSubmit()
+    {
+        var user = users.FirstOrDefault(u => u.Email == loginModel.Email && u.Password == loginModel.Password);
+        if (user != null)
+        {
+            switch (user.Role)
+            {
+                case "HRManager":
+                    Navigation.NavigateTo("/hr-dashboard");
+                    break;
+                case "ProjectManager":
+                    Navigation.NavigateTo("/project-dashboard");
+                    break;
+                case "Employee":
+                    Navigation.NavigateTo("/employee-dashboard");
+                    break;
+                default:
+                    Navigation.NavigateTo("/");
+                    break;
+            }
+        }
+        else
+        {
+            errorMessage = "Invalid login attempt.";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class User
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
+    }
+}

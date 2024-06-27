@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<NavMenu />
+<div class="main">
+    <div class="top-row px-4">
+        <button class="btn btn-link" @onclick="Logout">Log out</button>
+    </div>
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@code {
+    private async Task Logout()
+    {
+        await SignInManager.SignOutAsync();
+        Navigation.NavigateTo("/login", forceLoad: true);
+    }
+}

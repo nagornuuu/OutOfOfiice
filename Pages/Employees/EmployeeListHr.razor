@@ -1,0 +1,170 @@
+﻿@page "/employees/hr"
+@using OutOfOffice.Models
+@using OutOfOffice.Services
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Components.Authorization
+@inject EmployeeService EmployeeService
+@inject UserManager<IdentityUser> UserManager
+@inject NavigationManager Navigation
+@inject ILogger<EmployeeListHr> Logger
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Employees (HR Manager)</h3>
+
+<button class="btn btn-primary mb-3" @onclick="CreateEmployee">Create New Employee</button>
+<button class="btn btn-secondary mb-3" @onclick="NavigateBackToDashboard">Back to Dashboard</button>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Search by name..." @oninput="SearchEmployees" />
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th @onclick='() => SortTable("ID")'>ID</th>
+                <th @onclick='() => SortTable("FullName")'>Full Name</th>
+                <th @onclick='() => SortTable("Subdivision")'>Subdivision</th>
+                <th @onclick='() => SortTable("Position")'>Position</th>
+                <th @onclick='() => SortTable("Status")'>Status</th>
+                <th @onclick='() => SortTable("OutOfOfficeBalance")'>Out of Office Balance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in filteredEmployees)
+            {
+                <tr>
+                    <td>@employee.ID</td>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Subdivision</td>
+                    <td>@employee.Position</td>
+                    <td>@employee.Status</td>
+                    <td>@employee.OutOfOfficeBalance</td>
+                    <td>
+                        <button class="btn btn-info" @onclick="() => ViewEmployee(employee.ID)">View</button>
+                        <button class="btn btn-warning" @onclick="() => EditEmployee(employee.ID)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeactivateEmployee(employee.ID)">Deactivate</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Employee> employees;
+    private List<Employee> filteredEmployees;
+    private string searchQuery = string.Empty;
+    private string sortColumn = "ID";
+    private bool sortAscending = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadEmployeesAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading employees");
+        }
+    }
+
+    private async Task LoadEmployeesAsync()
+    {
+        employees = await EmployeeService.GetEmployeesAsync();
+        FilterAndSortEmployees();
+    }
+
+    private void FilterAndSortEmployees()
+    {
+        filteredEmployees = employees
+            .Where(e => string.IsNullOrEmpty(searchQuery) || e.FullName.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        SortEmployees();
+    }
+
+    private void SortEmployees()
+    {
+        switch (sortColumn)
+        {
+            case "ID":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.ID).ToList() : filteredEmployees.OrderByDescending(e => e.ID).ToList();
+                break;
+            case "FullName":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.FullName).ToList() : filteredEmployees.OrderByDescending(e => e.FullName).ToList();
+                break;
+            case "Subdivision":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.Subdivision).ToList() : filteredEmployees.OrderByDescending(e => e.Subdivision).ToList();
+                break;
+            case "Position":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.Position).ToList() : filteredEmployees.OrderByDescending(e => e.Position).ToList();
+                break;
+            case "Status":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.Status).ToList() : filteredEmployees.OrderByDescending(e => e.Status).ToList();
+                break;
+            case "OutOfOfficeBalance":
+                filteredEmployees = sortAscending ? filteredEmployees.OrderBy(e => e.OutOfOfficeBalance).ToList() : filteredEmployees.OrderByDescending(e => e.OutOfOfficeBalance).ToList();
+                break;
+        }
+    }
+
+    private void SortTable(string column)
+    {
+        if (sortColumn == column)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+
+        SortEmployees();
+    }
+
+    private void SearchEmployees(ChangeEventArgs e)
+    {
+        searchQuery = e.Value?.ToString();
+        FilterAndSortEmployees();
+    }
+
+    private void ViewEmployee(int id)
+    {
+        Navigation.NavigateTo($"/employees/hr/details/{id}");
+    }
+
+    private void EditEmployee(int id)
+    {
+        Navigation.NavigateTo($"/employees/edit/{id}");
+    }
+
+    private async Task DeactivateEmployee(int id)
+    {
+        var employee = employees.FirstOrDefault(e => e.ID == id);
+        if (employee != null)
+        {
+            employee.Status = "Inactive";
+            await EmployeeService.UpdateEmployeeAsync(employee);
+            await LoadEmployeesAsync();
+        }
+    }
+
+    private void CreateEmployee()
+    {
+        Navigation.NavigateTo("/employees/create");
+    }
+
+    private void NavigateBackToDashboard()
+    {
+        Navigation.NavigateTo("/hr-dashboard");
+    }
+
+}
